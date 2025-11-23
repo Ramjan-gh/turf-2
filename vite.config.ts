@@ -3,7 +3,10 @@
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
 
+  
+
   export default defineConfig({
+    base: "/turf-slot-booking-site-2/", 
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
