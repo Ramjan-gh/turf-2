@@ -6,7 +6,6 @@
   
 
   export default defineConfig({
-    base: "/turf-2/",
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],

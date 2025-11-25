@@ -1,49 +1,57 @@
-import { motion } from 'motion/react';
-import { CheckCircle, Download, Printer, X } from 'lucide-react';
-import { Button } from './ui/button';
-import { Booking } from '../App';
-import { format } from 'date-fns';
+import { motion } from "motion/react";
+import { CheckCircle, Download, Printer, X } from "lucide-react";
+import { Button } from "./ui/button";
+import { Booking } from "../App";
+import { format } from "date-fns";
 
 type BookingConfirmationProps = {
   booking: Booking;
   onClose: () => void;
 };
 
-export function BookingConfirmation({ booking, onClose }: BookingConfirmationProps) {
+export function BookingConfirmation({
+  booking,
+  onClose,
+}: BookingConfirmationProps) {
   const handlePrint = () => {
     window.print();
   };
 
   const handleDownload = () => {
-    // Trigger browser print dialog which allows saving as PDF
-    window.print();
+    window.print(); // browser print allows saving as PDF
   };
 
   const getSportIcon = (sport: string) => {
     switch (sport.toLowerCase()) {
-      case 'football': return '⚽';
-      case 'cricket': return '🏏';
-      case 'swimming': return '🏊';
-      default: return '🎯';
+      case "football":
+        return "⚽";
+      case "cricket":
+        return "🏏";
+      case "swimming":
+        return "🏊";
+      default:
+        return "🎯";
     }
   };
 
   const getSportData = () => {
     const sports = {
-      football: { name: 'Football', price: 1500 },
-      cricket: { name: 'Cricket', price: 1200 },
-      swimming: { name: 'Swimming', price: 800 },
+      football: { name: "Football", price: 1500 },
+      cricket: { name: "Cricket", price: 1200 },
+      swimming: { name: "Swimming", price: 800 },
     };
-    return sports[booking.sport.toLowerCase() as keyof typeof sports] || { name: booking.sport, price: 0 };
+    return (
+      sports[booking.sport.toLowerCase() as keyof typeof sports] || {
+        name: booking.sport,
+        price: 0,
+      }
+    );
   };
 
   const sportData = getSportData();
 
   return (
-    <div 
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto print:bg-white print:block print:p-0"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex justify-center items-start bg-gray-50 overflow-y-auto print:bg-white p-4 md:p-12">
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -58,9 +66,9 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
           <X className="w-5 h-5" />
         </button>
 
-        {/* Booking Slip Content - Receipt Style */}
+        {/* Booking Slip Content */}
         <div className="p-8 print:p-12">
-          {/* Success Header - Only show on screen */}
+          {/* Success Header */}
           <div className="text-center mb-6 print:hidden">
             <motion.div
               initial={{ scale: 0 }}
@@ -70,7 +78,7 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
             >
               <CheckCircle className="w-10 h-10 text-white" />
             </motion.div>
-            
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -92,30 +100,49 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
           {/* Receipt Header */}
           <div className="text-center border-b-2 border-dashed border-gray-300 pb-6 mb-6">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-full mb-3 print:bg-gray-900">
-              <span className="text-3xl">⚽</span>
+              <span className="text-3xl">{getSportIcon(booking.sport)}</span>
             </div>
             <h2 className="text-gray-900 mb-1">TurfBook</h2>
-            <p className="text-sm text-gray-600 uppercase tracking-wide">Booking Confirmation Receipt</p>
-            <p className="text-xs text-gray-500 mt-2">123 Sports Avenue, Gulshan-2, Dhaka-1212</p>
-            <p className="text-xs text-gray-500">Phone: +880 1234-567890 | Email: info@turfbook.com</p>
+            <p className="text-sm text-gray-600 uppercase tracking-wide">
+              Booking Confirmation Receipt
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              123 Sports Avenue, Gulshan-2, Dhaka-1212
+            </p>
+            <p className="text-xs text-gray-500">
+              Phone: +880 1234-567890 | Email: info@turfbook.com
+            </p>
           </div>
 
           {/* Booking Code */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 text-center border-2 border-blue-200 mb-6 print:bg-gray-100 print:border-gray-400">
-            <p className="text-xs text-gray-600 mb-2 uppercase tracking-wide">Booking Code</p>
-            <p className="text-3xl text-blue-600 tracking-wider mb-2 print:text-gray-900">#{booking.id}</p>
-            <p className="text-xs text-gray-500">Keep this code for tracking and verification</p>
+            <p className="text-xs text-gray-600 mb-2 uppercase tracking-wide">
+              Booking Code
+            </p>
+            <p className="text-3xl text-blue-600 tracking-wider mb-2 print:text-gray-900">
+              #{booking.id}
+            </p>
+            <p className="text-xs text-gray-500">
+              Keep this code for tracking and verification
+            </p>
           </div>
 
           {/* Booking Date & Time */}
           <div className="text-center py-3 border-b-2 border-dashed border-gray-300 mb-6">
             <p className="text-xs text-gray-500 mb-1">Booking Created On</p>
-            <p className="text-sm text-gray-900">{format(new Date(booking.createdAt), 'EEEE, MMMM d, yyyy - hh:mm a')}</p>
+            <p className="text-sm text-gray-900">
+              {format(
+                new Date(booking.createdAt),
+                "EEEE, MMMM d, yyyy - hh:mm a"
+              )}
+            </p>
           </div>
 
           {/* Customer Information */}
           <div className="mb-6">
-            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">Customer Information</p>
+            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">
+              Customer Information
+            </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Name:</span>
@@ -136,25 +163,36 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
 
           {/* Booking Details */}
           <div className="mb-6">
-            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">Booking Details</p>
+            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">
+              Booking Details
+            </p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Sport:</span>
                 <span className="text-gray-900 flex items-center gap-2">
-                  {getSportIcon(booking.sport)} {booking.sport.charAt(0).toUpperCase() + booking.sport.slice(1)}
+                  {getSportIcon(booking.sport)}{" "}
+                  {booking.sport.charAt(0).toUpperCase() +
+                    booking.sport.slice(1)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Date:</span>
-                <span className="text-gray-900">{format(new Date(booking.date), 'EEEE, MMMM d, yyyy')}</span>
+                <span className="text-gray-900">
+                  {format(new Date(booking.date), "EEEE, MMMM d, yyyy")}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Time Slots:</span>
-                <span className="text-gray-900">{booking.slots.join(', ')}</span>
+                <span className="text-gray-900">
+                  {booking.slots.join(", ")}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Duration:</span>
-                <span className="text-gray-900">{booking.slots.length} hour{booking.slots.length > 1 ? 's' : ''}</span>
+                <span className="text-gray-900">
+                  {booking.slots.length} hour
+                  {booking.slots.length > 1 ? "s" : ""}
+                </span>
               </div>
               {booking.players && (
                 <div className="flex justify-between">
@@ -165,32 +203,31 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
             </div>
           </div>
 
-          {/* Payment Details */}
+          {/* Payment & Price Breakdown */}
           <div className="mb-6">
-            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">Payment Information</p>
+            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">
+              Payment & Price
+            </p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Payment Method:</span>
-                <span className="text-gray-900 uppercase">{booking.paymentMethod}</span>
+                <span className="text-gray-900 uppercase">
+                  {booking.paymentMethod}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Payment Type:</span>
                 <span className="text-gray-900">
-                  {booking.paymentAmount === 'confirmation' ? 'Confirmation Amount (20%)' : 'Full Payment (100%)'}
+                  {booking.paymentAmount === "confirmation"
+                    ? "Confirmation Amount (20%)"
+                    : "Full Payment (100%)"}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Payment Status:</span>
                 <span className="text-green-600">Confirmed</span>
               </div>
-            </div>
-          </div>
-
-          {/* Price Breakdown */}
-          <div className="mb-6">
-            <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">Price Breakdown</p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm border-t border-dashed pt-2">
                 <span className="text-gray-600">Rate per hour:</span>
                 <span className="text-gray-900">৳{sportData.price}</span>
               </div>
@@ -200,32 +237,41 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
               </div>
               <div className="flex justify-between text-sm border-t border-dashed pt-2">
                 <span className="text-gray-700">Subtotal:</span>
-                <span className="text-gray-900">৳{booking.slots.length * sportData.price}</span>
+                <span className="text-gray-900">
+                  ৳{booking.slots.length * sportData.price}
+                </span>
               </div>
-              
               {booking.discountCode && (
                 <div className="flex justify-between text-sm text-green-600">
                   <span>Discount ({booking.discountCode}):</span>
-                  <span>-৳{(booking.slots.length * sportData.price) - booking.totalPrice}</span>
+                  <span>
+                    -৳
+                    {booking.slots.length * sportData.price -
+                      booking.totalPrice}
+                  </span>
                 </div>
               )}
-              
               <div className="flex justify-between text-sm pt-2 border-t-2 border-gray-900">
                 <span className="text-gray-900">Total Amount:</span>
                 <span className="text-gray-900">৳{booking.totalPrice}</span>
               </div>
-              
               <div className="flex justify-between bg-gray-900 text-white p-3 rounded-lg print:bg-gray-800">
-                <span className="text-white">Amount Paid:</span>
+                <span>Amount Paid:</span>
                 <span className="text-xl">
-                  ৳{booking.paymentAmount === 'confirmation' ? Math.ceil(booking.totalPrice * 0.2) : booking.totalPrice}
+                  ৳
+                  {booking.paymentAmount === "confirmation"
+                    ? Math.ceil(booking.totalPrice * 0.2)
+                    : booking.totalPrice}
                 </span>
               </div>
-
-              {booking.paymentAmount === 'confirmation' && (
+              {booking.paymentAmount === "confirmation" && (
                 <div className="flex justify-between text-sm bg-yellow-50 p-3 rounded-lg border border-yellow-200 print:bg-gray-100">
-                  <span className="text-gray-700">Remaining Amount (due at venue):</span>
-                  <span className="text-gray-900">৳{booking.totalPrice - Math.ceil(booking.totalPrice * 0.2)}</span>
+                  <span className="text-gray-700">
+                    Remaining Amount (due at venue):
+                  </span>
+                  <span className="text-gray-900">
+                    ৳{booking.totalPrice - Math.ceil(booking.totalPrice * 0.2)}
+                  </span>
                 </div>
               )}
             </div>
@@ -234,20 +280,33 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
           {/* Special Notes */}
           {booking.notes && (
             <div className="mb-6">
-              <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">Special Notes</p>
-              <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg print:bg-gray-100">{booking.notes}</p>
+              <p className="text-sm uppercase tracking-wide text-gray-700 border-b-2 border-gray-200 pb-2 mb-3">
+                Special Notes
+              </p>
+              <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg print:bg-gray-100">
+                {booking.notes}
+              </p>
             </div>
           )}
 
-          {/* Terms & Conditions */}
+          {/* Terms */}
           <div className="mb-6 text-xs text-gray-600">
-            <p className="font-medium text-gray-700 mb-2 uppercase tracking-wide">Important Instructions:</p>
+            <p className="font-medium text-gray-700 mb-2 uppercase tracking-wide">
+              Important Instructions:
+            </p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li>Please arrive at least 10 minutes before your scheduled time</li>
+              <li>
+                Please arrive at least 10 minutes before your scheduled time
+              </li>
               <li>Bring a valid ID for verification at the venue</li>
-              <li>Cancellations must be made 24 hours in advance for a refund</li>
+              <li>
+                Cancellations must be made 24 hours in advance for a refund
+              </li>
               <li>Show this booking code at the reception</li>
-              <li>For confirmation amount payments, remaining balance must be paid at the venue</li>
+              <li>
+                For confirmation amount payments, remaining balance must be paid
+                at the venue
+              </li>
             </ul>
           </div>
 
@@ -259,22 +318,20 @@ export function BookingConfirmation({ booking, onClose }: BookingConfirmationPro
             <p className="mt-2 text-gray-400">Visit us: www.turfbook.com</p>
           </div>
 
-          {/* Action Buttons - Only show on screen */}
+          {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-3 mt-6 print:hidden">
             <Button
               onClick={handleDownload}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Save as PDF
+              <Download className="w-4 h-4 mr-2" /> Save as PDF
             </Button>
             <Button
               onClick={handlePrint}
               variant="outline"
               className="border-2"
             >
-              <Printer className="w-4 h-4 mr-2" />
-              Print Receipt
+              <Printer className="w-4 h-4 mr-2" /> Print Receipt
             </Button>
           </div>
         </div>
